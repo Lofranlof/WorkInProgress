@@ -7,9 +7,7 @@ namespace Backups.Entities;
 
 public class BackupConfiguration : IBackupConfiguration
 {
-    private readonly IReadOnlyCollection<BackupObject> _backupObjects;
-
-    public BackupConfiguration(IAlgorithm algorithm, IRepositoryBackupRestorePoint repositoryRestorePoint, IRepositoryBackupObject repositoryBackupObject, IReadOnlyCollection<BackupObject> backupObjects)
+    public BackupConfiguration(IAlgorithm algorithm, IRepositoryBackupRestorePoint repositoryRestorePoint, IRepositoryBackupObject repositoryBackupObject)
     {
         if (algorithm == null)
         {
@@ -29,10 +27,8 @@ public class BackupConfiguration : IBackupConfiguration
         StorageAlgorithm = algorithm;
         BackupObjectRepository = repositoryBackupObject;
         RestorePointRepository = repositoryRestorePoint;
-        _backupObjects = backupObjects;
     }
 
-    public IReadOnlyCollection<BackupObject> BackupObjects => _backupObjects;
     public IAlgorithm StorageAlgorithm { get; private set; }
     public IRepositoryBackupObject BackupObjectRepository { get; private set; }
     public IRepositoryBackupRestorePoint RestorePointRepository { get; private set; }

@@ -1,10 +1,25 @@
 using System.IO.Compression;
 using Backups.Entities;
+using Backups.Exceptions;
 
 namespace Backups.Repositories;
 
 public class FileSystemRepositoryRestorePoint : IRepositoryBackupRestorePoint
 {
+    private readonly List<Backup> _backups;
+
+    public FileSystemRepositoryRestorePoint(string path, List<Backup> backups)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new BackupExceptions("Invlaid path of backups repository");
+        }
+
+        _backups = backups;
+    }
+
+    public IReadOnlyCollection<Backup> Backups => _backups;
+
     public List<Storage> InitStorage(BackupTask backupTask)
     {
         List<Storage> storages = new List<Storage>();
@@ -22,11 +37,21 @@ public class FileSystemRepositoryRestorePoint : IRepositoryBackupRestorePoint
 
     public List<Backup> GetAllBackups()
     {
-        throw new NotImplementedException();
+        return Backups.ToList();
     }
 
     public List<Backup> GetBackupsByName(string name)
     {
-        throw new NotImplementedException();
+        return Backups.Where(backup => backup.BackupName == name).ToList();
+    }
+
+    public void AddBackup(Backup backup)
+    {
+        if (backup == null)
+        {
+            throw new BackupExceptions("Invalid backup, backup can't be null");
+        }
+
+        _backups.Add(backup);
     }
 }

@@ -6,15 +6,19 @@ public class Backup
 {
     private readonly List<RestorePoint> _restorePointCollection;
 
-    public Backup(IReadOnlyCollection<RestorePoint> restorePoints, BackupTask backupTask)
+    public Backup(IReadOnlyCollection<RestorePoint> restorePoints, string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new BackupExceptions("Invalid name of backup");
+        }
+
+        BackupName = name;
         _restorePointCollection = restorePoints.ToList();
-        BackupTask = backupTask;
     }
 
     public IReadOnlyCollection<RestorePoint> RestorePointsCollection => _restorePointCollection;
-    public BackupTask BackupTask { get; }
-
+    public string BackupName { get; }
     public void AddRestorePoint(RestorePoint newRestorePoint)
     {
         if (newRestorePoint == null)

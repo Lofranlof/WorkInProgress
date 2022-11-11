@@ -38,6 +38,16 @@ public class InMemoryRepositoryRestorePoint : IRepositoryBackupRestorePoint
             throw new BackupExceptions("Invalid name of backup");
         }
 
-        return Backups.Where(backup => backup.BackupTask.NameOfBackupTask == name).ToList();
+        return Backups.Where(backup => backup.BackupName == name).ToList();
+    }
+
+    public void AddBackup(Backup backup)
+    {
+        if (backup == null)
+        {
+            throw new BackupExceptions("Invalid backup, backup can't be null");
+        }
+
+        _backups.Add(backup);
     }
 }

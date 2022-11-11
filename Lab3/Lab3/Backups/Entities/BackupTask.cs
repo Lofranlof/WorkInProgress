@@ -9,19 +9,18 @@ public class BackupTask
 {
     private readonly List<BackupObject> _backupObjects;
 
-    public BackupTask(Backup backup, BackupConfiguration backupConfig, string name)
+    public BackupTask(BackupConfiguration backupConfig, string name)
     {
         BackupConfig = backupConfig;
-        Backup = backup;
         NameOfBackupTask = name;
-        _backupObjects = backupConfig.BackupObjects.ToList();
+        _backupObjects = new List<BackupObject>();
+        Backup = CreateBackup();
     }
 
     public IReadOnlyCollection<BackupObject> BackupObjects => _backupObjects;
     public BackupConfiguration BackupConfig { get; }
+    public Backup Backup { get; private set; }
     public string NameOfBackupTask { get; }
-    public Backup Backup { get; }
-
     public void AddBackupObject(BackupObject backupObject)
     {
         if (backupObject == null)
@@ -52,10 +51,17 @@ public class BackupTask
         _backupObjects.Remove(backupObject);
     }
 
+    public Backup CreateBackup()
+    {
+        Backup backup = new Backup(new List<RestorePoint>(), NameOfBackupTask);
+        Backup = backup;
+        return backup;
+    }
+
     public void RunBackupTask()
     {
-        RestorePoint restorePoint = new RestorePoint(DateTime.Now, _backupObjects, new List<Storage>());
-        Backup backup = new Backup(new List<RestorePoint>(), this);
-        backup.AddRestorePoint(restorePoint);
+        List<Storage> storages = BackupConfig.RestorePointRepository.InitStorage(this);
+        RestorePoint restorePoint = new RestorePoint(DateTime.Now, storages);
+        Backup.AddRestorePoint(restorePoint);
     }
 }

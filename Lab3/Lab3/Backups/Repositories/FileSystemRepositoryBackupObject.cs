@@ -5,7 +5,8 @@ namespace Backups.Repositories;
 
 public class FileSystemRepositoryBackupObject : IRepositoryBackupObject
 {
-    public FileSystemRepositoryBackupObject(string path)
+    private readonly List<BackupObject> _backupObjects;
+    public FileSystemRepositoryBackupObject(string path, List<BackupObject> backupObjects)
     {
         if (string.IsNullOrWhiteSpace(path))
         {
@@ -13,16 +14,18 @@ public class FileSystemRepositoryBackupObject : IRepositoryBackupObject
         }
 
         PathToRep = path;
+        _backupObjects = backupObjects;
     }
 
+    public IReadOnlyCollection<BackupObject> BackupsObjects => _backupObjects;
     public string PathToRep { get; }
     public List<BackupObject> GetAllBackupObjects()
     {
-        throw new NotImplementedException();
+        return BackupsObjects.ToList();
     }
 
     public List<BackupObject> GetBackupObjectsByName(string name)
     {
-        throw new NotImplementedException();
+        return BackupsObjects.Where(backupObj => backupObj.Name == name).ToList();
     }
 }
