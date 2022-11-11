@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "+1+qhpYMWAlUjkDudTa7GCacTSMmqJAiAhMFaKM1z4e509iHTd1GscrD2qQYsQudjNQ6oxWTjPE2B8MGbjyuXA==",
+  "success": true,
+  "projectFilePath": "/Users/ruslani4/Documents/GitHub/OOPlabs/Lab3/Backups/Backups.csproj",
+  "expectedPackageFiles": [
+    "/Users/ruslani4/.nuget/packages/stylecop.analyzers/1.1.118/stylecop.analyzers.1.1.118.nupkg.sha512"
+  ],
+  "logs": []
+}
